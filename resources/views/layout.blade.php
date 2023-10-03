@@ -16,16 +16,16 @@
                     <a href="{{ route('prodotti.index') }}"
                        class="nav-link @if(Str::contains(URL::current(), 'prodotti')) active @endif">Prodotti</a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('clienti.index') }}"
-                       class="nav-link @if(Str::contains(URL::current(), 'clienti')) active @endif">Clienti</a>
-                </li>
 
                 <li class="nav-item">
                     <a href="{{ route('fornitori.index') }}"
                        class="nav-link @if(Str::contains(URL::current(), 'fornitori')) active @endif">Fornitori</a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{ route('clienti.index') }}"
+                       class="nav-link @if(Str::contains(URL::current(), 'clienti')) active @endif">Clienti</a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ route('ordini.index') }}"
                        class="nav-link @if(Str::contains(URL::current(), 'ordini')) active @endif">Ordini</a>
@@ -37,6 +37,11 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="{{ route('quadri.index') }}"
+                       class="nav-link @if(Str::contains(URL::current(), 'quadri')) active @endif">Quadri</a>
+                </li>
+
+                <li class="nav-item">
                     <a href="{{ route('veicoli.index') }}"
                        class="nav-link @if(Str::contains(URL::current(), 'veicoli')) active @endif">Veicoli</a>
                 </li>
@@ -44,11 +49,6 @@
                 <li class="nav-item">
                     <a href="{{ route('parcheggi.index') }}"
                        class="nav-link @if(Str::contains(URL::current(), 'parcheggi')) active @endif">Parcheggi</a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ route('quadri.index') }}"
-                       class="nav-link @if(Str::contains(URL::current(), 'quadri')) active @endif">Quadri</a>
                 </li>
             </ul>
         </div>
