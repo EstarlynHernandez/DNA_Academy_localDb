@@ -1,0 +1,144 @@
+@extends('layout')
+
+@section('title')
+    Lista di veicoli
+@endsection
+
+@section('content')
+    <div class="container">
+        <form style="max-width: 480px" action="{{ route('veicoli.index') }}">
+            <div class="input-group mt-2">
+                <label for="search" class="input-group-text">Search</label>
+                <input id="search" class="form-control" type="text" name="search" placeholder="Search"
+                       value="{{ request('search') }}">
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+                <button class="btn btn-outline-success" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseExample"
+                        aria-expanded="false" aria-controls="collapseExample">
+                    Filters
+                </button>
+
+                <input class="btn btn-outline-primary" type="submit" value="Cerca">
+            </div>
+
+            <div class="collapse position-absolute" id="collapseExample">
+                <div style="max-width: 480px" class="card card-body mt-2">
+                    <h3>Filtri</h3>
+
+                    <div class="input-group mt-2">
+                        <label for="order" class="input-group-text">Order By</label>
+                        <select class="form-select" name="order" id="order">
+                            <option value="modello" @if(request('order') == 'modello') selected @endif>Id</option>
+                            <option value="targa" @if(request('order') == 'targa') selected @endif>Targa</option>
+                            <option value="marca" @if(request('order') == 'marca') selected @endif>Marca</option>
+                        </select>
+
+                        <select class="form-select" name='desc'>
+                            <option value="">Asc</option>
+                            <option value="true" @if(request('desc') == 'true') selected @endif>Desc</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group mt-2">
+                        <label for="parcheggio" class="input-group-text">Parcheggio</label>
+                        <select class="form-select" name="parcheggio" id="parcheggio">
+                            <option value="">Tutti</option>
+                            @foreach($parcheggi as $parcheggio)
+                                <option value="{{ $parcheggio->id }}"
+                                        @if(request('parcheggio') == $parcheggio->id) selected @endif>
+                                    {{ $parcheggio->nome }}</option>
+                            @endforeach
+                        </select>
+
+                        <label for="marca" class="input-group-text">Marca</label>
+                        <select class="form-select" name="marca" id="marca">
+                            <option value="">Tutti</option>
+                            @foreach($marche as $marca)
+                                <option value="{{ $marca }}"
+                                        @if(request('marca') == $marca) selected @endif>
+                                    {{ ucfirst($marca) }}</option>
+                            @endforeach
+                        </select>
+
+                        <label for="modello" class="input-group-text">Modello</label>
+                        <select class="form-select" name="modello" id="modello">
+                            <option value="">Tutti</option>
+                            @foreach($modelli as $modello)
+                                <option value="{{ $modello }}"
+                                        @if(request('modello') == $modello) selected @endif>
+                                    {{ ucfirst($modello) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="container mt-5">
+        <div class="d-flex gap-2 mb-5">
+            <h2>Lista di veicoli</h2>
+            <a class="btn btn-primary d-flex align-items-center" href="{{ route('veicoli.create') }}">Nuovo</a>
+        </div>
+        <table class="table">
+            <tr>
+                <th>Id</th>
+                <th>Targa</th>
+                <th>Marca</th>
+                <th>Modello</th>
+                <th>Parcheggio</th>
+            </tr>
+            @foreach($veicoli as $veicolo)
+                <tr>
+                    <td>{{$veicolo->id}}</td>
+                    <td>{{$veicolo->targa}}</td>
+                    <td>{{$veicolo->marca}}</td>
+                    <td>{{$veicolo->modello}}</td>
+                    <td>{{$veicolo->parcheggio_id}}</td>
+                    <td class="d-flex gap-1">
+                        <a class="btn btn-warning d-flex align-items-center justify-content-center"
+                           href="{{ route('veicoli.edit', ['veicoli' => $veicolo->id]) }}">Edit</a>
+                        <form method="POST" action="{{ route('veicoli.destroy', ['veicoli' => $veicolo->id]) }}">
+                            @method('delete')
+                            @csrf
+                            <input class="btn btn-danger" type="submit" value="Elimina">
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </table>
+    </div>
+
+    <div class="container">
+        <a href="{{ route('veicoli.index') }}?parcheggio={{ $parcheggio->id ?? ''}}" class="link-success text-decoration-none fw-bold">
+            <p>1. Selezionare tutti i veicoli parcheggiati in un determinato parcheggio</p></a>
+
+        <a href="{{ route('parcheggi.index') }}?marca={{ $marca ?? '' }}" class="link-success text-decoration-none fw-bold">
+            <p>2. Selezionare tutti i parcheggi in cui e parcheggiata una determinata marca</p></a>
+
+        <a href="{{ route('veicoli.create') }}" class="link-success text-decoration-none fw-bold">
+            <p>3. Inserire un nuovo veicolo nel databases</p></a>
+
+        <a href="{{ route('parcheggi.create') }}" class="link-success text-decoration-none fw-bold">
+            <p>4. Inserire un nuovo parcheggio nel databases</p></a>
+
+        <a href="{{ route('parcheggi.index') }}" class="link-warning text-decoration-none fw-bold">
+            <p>5. Aggiornare il parcheggio in cui e parcheggiato un determinato veicolo</p></a>
+
+        <a href="{{ route('veicoli.index') }}" class="link-success text-decoration-none fw-bold">
+            <p>6. Eliminare un veicolo dal databases</p></a>
+
+        <a href="{{ route('parcheggi.index') }}" class="link-success text-decoration-none fw-bold">
+            <p>7. Eliminare un parcheggio dal databases</p></a>
+
+        <a href="{{ route('parcheggi.index') }}" class="link-success text-decoration-none fw-bold">
+            <p>8. Contare Quanti veicolo sono parcheggiati in ogni parcheggio</p></a>
+
+        <a href="{{ route('parcheggi.index') }}" class="link-success text-decoration-none fw-bold">
+            <p>9. Seleziona il parcheggio che ospita il maggior numero di veicoli</p></a>
+
+        <a href="{{ route('veicoli.index') }}?modello={{ $modello ?? ''}}" class="link-success text-decoration-none fw-bold">
+            <p>10. Selezionare tutti i veicolo di una determinata marca e modello</p></a>
+    </div>
+@endsection
